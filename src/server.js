@@ -13,9 +13,10 @@ app.use(express.json());
 
 const userRoutes = require('./routes/userRoutes');
 const mallRoutes = require('./routes/mallRoutes');
+const bookingRoutes = require('./routes/bookingRoutes');
 app.use('/api/malls',mallRoutes);
 app.use('/api/users', userRoutes);
-
+app.use('/api/bookings',bookingRoutes);
 app.get('/', (req, res) => {
     res.json({ message: "Hi Buddy", status: "Active", version: "1.0.0" });
 });
