@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');        
 const helmet = require('helmet');       
 const morgan = require('morgan');     
-
+const path = require('path');
 const app = express();
 
 app.use(cors());
@@ -18,7 +18,16 @@ app.use('/api/malls',mallRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/bookings',bookingRoutes);
 app.get('/', (req, res) => {
-    res.json({ message: "Hi Buddy", status: "Active", version: "1.0.0" });
+    res.sendFile(path.join(__dirname,'./','views','home.html'));
+});
+//register______________________________
+app.get('/register', (req, res) => {
+    res.sendFile(path.join(__dirname,'./','views','register.html'));
+});
+
+//login________________________________
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname,'./','views','login.html'));
 });
 
 app.get('/api/health', (req, res) => {

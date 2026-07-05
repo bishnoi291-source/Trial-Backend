@@ -1,4 +1,12 @@
-let malls = [];
+let malls = [{
+        id:1000,
+        name:"Trends",
+        location:"Poata",
+        rating:4.5,
+        description:"Best Shopping Mall",
+        facilities:[],
+        createdAt:new Date()
+    }];
 const createMall = (mallData) => {
     const newMall = {
         id:Date.now().toString(), // Tempo ID

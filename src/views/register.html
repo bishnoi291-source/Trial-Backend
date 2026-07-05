@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register — Trial</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --dusk-deep:#161233;
+    --dusk-mid:#2c1f5c;
+    --slate-blue:#2e4c6d;
+    --amber:#ffb86b;
+    --amber-soft:#ffd9a0;
+    --cream:#f6efe4;
+    --cream-dim:#cfc7e0;
+    --glass:rgba(246,239,228,0.08);
+    --glass-edge:rgba(255,217,160,0.35);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Inter',sans-serif;
+    color:var(--cream);
+    min-height:100vh;
+    display:flex; align-items:center; justify-content:center;
+    padding:24px;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,184,107,0.18), transparent 60%),
+      linear-gradient(180deg, var(--dusk-deep) 0%, var(--dusk-mid) 45%, var(--slate-blue) 100%);
+  }
+  a{color:inherit;}
+  .wrap{width:100%; max-width:420px;}
+  .brandmark{
+    font-family:'Fraunces', serif; font-weight:600; font-size:1.4rem;
+    display:flex; align-items:center; gap:10px; justify-content:center; margin-bottom:36px;
+  }
+  .brandmark .dot{
+    width:9px;height:9px;border-radius:50%; background:var(--amber);
+    box-shadow:0 0 14px 3px var(--amber-soft);
+  }
+  .panel{
+    background:linear-gradient(160deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
+    border:1px solid rgba(255,217,160,0.25);
+    border-radius:20px;
+    padding:38px 34px;
+    backdrop-filter:blur(10px);
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.55);
+  }
+  h1{
+    font-family:'Fraunces', serif; font-weight:500; font-size:1.9rem;
+    margin-bottom:8px; text-align:center;
+  }
+  .sub{text-align:center; color:var(--cream-dim); font-size:.92rem; margin-bottom:30px;}
+  form{display:flex; flex-direction:column; gap:16px;}
+  label{font-size:.82rem; color:var(--cream-dim); display:flex; flex-direction:column; gap:6px;}
+  input{
+    padding:13px 14px; border-radius:10px;
+    border:1px solid rgba(255,217,160,0.25);
+    background:rgba(0,0,0,0.2); color:var(--cream); font-size:.95rem; font-family:inherit;
+  }
+  input:focus{outline:2px solid var(--amber-soft); outline-offset:1px;}
+  .hint{font-size:.75rem; color:var(--cream-dim); opacity:.8; font-weight:400;}
+  .btn{
+    margin-top:6px;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+    padding:14px 28px; border-radius:12px; border:none;
+    text-decoration:none; font-weight:600; font-size:.95rem; cursor:pointer;
+    background:linear-gradient(135deg, var(--amber), #e08f3d);
+    color:var(--dusk-deep);
+    box-shadow:0 12px 30px -8px rgba(255,184,107,0.55);
+    transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s;
+    font-family:inherit;
+  }
+  .btn:hover{transform:translateY(-2px); box-shadow:0 16px 36px -6px rgba(255,184,107,0.7);}
+  .btn:disabled{opacity:.6; cursor:not-allowed; transform:none;}
+  .msg{font-size:.85rem; display:none; padding:10px 14px; border-radius:10px;}
+  .msg.error{display:block; color:#ff9b9b; background:rgba(255,120,120,0.1); border:1px solid rgba(255,120,120,0.25);}
+  .msg.success{display:block; color:#9be89b; background:rgba(120,255,150,0.08); border:1px solid rgba(150,255,170,0.25);}
+  .foot{text-align:center; margin-top:24px; font-size:.88rem; color:var(--cream-dim);}
+  .foot a{color:var(--amber-soft); font-weight:600; text-decoration:none;}
+  .foot a:hover{text-decoration:underline;}
+  .back{
+    display:inline-block; margin-bottom:22px; font-size:.85rem; color:var(--cream-dim);
+    text-decoration:none;
+  }
+  .back:hover{color:var(--amber-soft);}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="brandmark"><span class="dot"></span>Trial</div>
+    <div class="panel">
+      <a href="/" class="back">← Back to home</a>
+      <h1>Create your account</h1>
+      <p class="sub">Save favourites, book faster, track your bookings.</p>
+
+      <p class="msg error" id="formError"></p>
+      <p class="msg success" id="formSuccess"></p>
+
+      <form id="registerForm">
+        <label>Full name
+          <input type="text" name="name" autocomplete="name" required>
+        </label>
+        <label>Email
+          <input type="email" name="email" autocomplete="email" required>
+        </label>
+        <label>Password
+          <input type="password" name="password" autocomplete="new-password" minlength="6" required>
+          <span class="hint">At least 6 characters.</span>
+        </label>
+        <button class="btn" type="submit" id="submitBtn">Create account →</button>
+      </form>
+
+      <p class="foot">Already have an account? <a href="/#login" id="loginLink">Log in</a></p>
+    </div>
+  </div>
+
+  <script src="/register.js" defer></script>
+</body>
+</html>

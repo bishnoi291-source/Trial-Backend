@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trial — Discover & Book Malls</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --dusk-deep:#161233;
+    --dusk-mid:#2c1f5c;
+    --dusk-violet:#4a3585;
+    --slate-blue:#2e4c6d;
+    --amber:#ffb86b;
+    --amber-soft:#ffd9a0;
+    --cream:#f6efe4;
+    --cream-dim:#cfc7e0;
+    --glass:rgba(246,239,228,0.08);
+    --glass-edge:rgba(255,217,160,0.35);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Inter',sans-serif;
+    background:var(--dusk-deep);
+    color:var(--cream);
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--amber);color:var(--dusk-deep);}
+
+  a{color:inherit;}
+
+  /* ---------- HERO / ATRIUM SCENE ---------- */
+  .scene{
+    position:relative;
+    min-height:100vh;
+    perspective:1200px;
+    overflow:hidden;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,184,107,0.18), transparent 60%),
+      linear-gradient(180deg, var(--dusk-deep) 0%, var(--dusk-mid) 45%, var(--slate-blue) 100%);
+  }
+
+  .stars{position:absolute; inset:0; z-index:0;}
+  .star{position:absolute; width:2px; height:2px; background:var(--cream); border-radius:50%; opacity:.5; animation:twinkle 4s ease-in-out infinite;}
+  @keyframes twinkle{ 0%,100%{opacity:.15;} 50%{opacity:.8;} }
+
+  .skyline{
+    position:absolute;
+    bottom:0; left:0; width:100%;
+    z-index:1;
+    transform-style:preserve-3d;
+    pointer-events:none;
+  }
+
+  nav{
+    position:relative;
+    z-index:5;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:28px 48px;
+    max-width:1280px;
+    margin:0 auto;
+  }
+  .brandmark{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:1.4rem;
+    letter-spacing:0.02em;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .brandmark .dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--amber);
+    box-shadow:0 0 14px 3px var(--amber-soft);
+  }
+  .navlinks{display:flex; gap:32px; font-size:.92rem; color:var(--cream-dim);}
+  .navlinks a{text-decoration:none; transition:color .25s;}
+  .navlinks a:hover{color:var(--amber-soft);}
+
+  .hero{
+    position:relative;
+    z-index:5;
+    max-width:1280px;
+    margin:0 auto;
+    padding:70px 48px 40px;
+    display:grid;
+    grid-template-columns:1.05fr 0.95fr;
+    gap:40px;
+    align-items:center;
+    min-height:calc(100vh - 96px);
+  }
+  .eyebrow{
+    font-size:.78rem;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--amber-soft);
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:22px;
+  }
+  .eyebrow::before{content:''; width:26px; height:1px; background:var(--amber-soft); display:inline-block;}
+
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    font-size:clamp(3rem, 6.4vw, 5.2rem);
+    line-height:0.98;
+    letter-spacing:-0.01em;
+  }
+  h1 em{
+    font-style:italic;
+    font-weight:400;
+    background:linear-gradient(100deg, var(--amber-soft), var(--amber) 60%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .tagline{
+    margin-top:22px;
+    font-size:1.1rem;
+    color:var(--cream-dim);
+    max-width:460px;
+    line-height:1.6;
+  }
+  .cta-row{display:flex; gap:16px; margin-top:38px; flex-wrap:wrap;}
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:15px 30px;
+    border-radius:12px;
+    text-decoration:none;
+    font-weight:600;
+    font-size:.95rem;
+    transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s;
+  }
+  .btn-primary{
+    background:linear-gradient(135deg, var(--amber), #e08f3d);
+    color:var(--dusk-deep);
+    box-shadow:0 12px 30px -8px rgba(255,184,107,0.55);
+  }
+  .btn-primary:hover{transform:translateY(-3px); box-shadow:0 16px 36px -6px rgba(255,184,107,0.7);}
+  .btn-ghost{
+    background:var(--glass);
+    border:1px solid var(--glass-edge);
+    color:var(--cream);
+    backdrop-filter:blur(6px);
+  }
+  .btn-ghost:hover{transform:translateY(-3px); background:rgba(246,239,228,0.14);}
+
+  .stat-row{display:flex; gap:36px; margin-top:52px;}
+  .stat b{font-family:'Fraunces',serif; font-size:1.6rem; font-weight:600; display:block; color:var(--amber-soft);}
+  .stat span{font-size:.78rem; color:var(--cream-dim); letter-spacing:.03em;}
+
+  /* ---------- 3D STOREFRONT COMPOSITION ---------- */
+  .storefront-wrap{
+    position:relative;
+    height:480px;
+    transform-style:preserve-3d;
+    perspective:1000px;
+  }
+  .pane{
+    position:absolute;
+    border-radius:18px;
+    background:linear-gradient(160deg, rgba(255,255,255,0.10), rgba(255,255,255,0.02));
+    border:1px solid rgba(255,217,160,0.25);
+    backdrop-filter:blur(10px);
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.15);
+    transition:transform .15s ease-out;
+    transform-style:preserve-3d;
+  }
+  .pane-glow{
+    position:absolute;
+    border-radius:inherit;
+    inset:0;
+    background:radial-gradient(circle at 30% 20%, rgba(255,184,107,0.35), transparent 60%);
+  }
+  #pane1{width:230px; height:290px; top:10px; left:40px; transform:translateZ(40px) rotateY(6deg);}
+  #pane2{width:190px; height:230px; top:190px; left:250px; transform:translateZ(90px) rotateY(-4deg);}
+  #pane3{width:150px; height:150px; top:0; left:300px; transform:translateZ(140px) rotateY(-10deg) rotateX(4deg);}
+  .pane-icon{font-size:2.1rem; position:absolute; top:22px; left:22px; filter:drop-shadow(0 6px 10px rgba(0,0,0,.4));}
+  .pane-label{position:absolute; bottom:18px; left:22px; right:18px; font-size:.82rem; color:var(--cream-dim); font-weight:500;}
+  .pane-label b{display:block; color:var(--cream); font-family:'Fraunces',serif; font-size:1.05rem; font-weight:600; margin-bottom:3px;}
+
+  /* ---------- FEATURES ---------- */
+  .section{
+    max-width:1280px;
+    margin:0 auto;
+    padding:120px 48px;
+    position:relative;
+    z-index:5;
+  }
+  .section-head{max-width:600px; margin-bottom:64px;}
+  .section-head .eyebrow{color:var(--slate-blue-soft, var(--amber-soft));}
+  .section-head h2{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:clamp(2rem, 3.6vw, 2.8rem);
+    line-height:1.15;
+  }
+  .section-head p{margin-top:16px; color:var(--cream-dim); font-size:1.05rem; line-height:1.6;}
+
+  .features{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:26px;
+  }
+  .card{
+    position:relative;
+    background:linear-gradient(165deg, rgba(255,255,255,0.07), rgba(255,255,255,0.015));
+    border:1px solid rgba(255,217,160,0.16);
+    border-radius:20px;
+    padding:36px 30px 32px;
+    transform-style:preserve-3d;
+    transition:transform .12s ease-out, border-color .3s;
+    cursor:default;
+  }
+  .card:hover{border-color:rgba(255,217,160,0.45);}
+  .card::after{
+    content:'';
+    position:absolute; inset:0;
+    border-radius:inherit;
+    background:radial-gradient(circle at var(--mx,50%) var(--my,0%), rgba(255,217,160,0.16), transparent 55%);
+    opacity:0; transition:opacity .3s;
+    pointer-events:none;
+  }
+  .card:hover::after{opacity:1;}
+  .card .icon{
+    width:52px; height:52px;
+    border-radius:14px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:1.5rem;
+    background:linear-gradient(135deg, var(--amber), #d97a2f);
+    margin-bottom:22px;
+    box-shadow:0 10px 22px -6px rgba(255,184,107,0.5);
+  }
+  .card h3{font-family:'Fraunces',serif; font-weight:600; font-size:1.25rem; margin-bottom:10px;}
+  .card p{color:var(--cream-dim); font-size:.94rem; line-height:1.6;}
+  .card .num{
+    position:absolute; top:28px; right:28px;
+    font-family:'Fraunces',serif; font-style:italic;
+    font-size:.85rem; color:rgba(246,239,228,0.3);
+  }
+
+  /* ---------- CLOSING CTA ---------- */
+  .closing{
+    position:relative; z-index:5;
+    max-width:1280px; margin:0 auto;
+    padding:0 48px 130px;
+    text-align:center;
+  }
+  .closing-panel{
+    border-radius:28px;
+    padding:64px 40px;
+    background:linear-gradient(150deg, rgba(255,184,107,0.14), rgba(74,53,133,0.22));
+    border:1px solid rgba(255,217,160,0.25);
+    position:relative;
+    overflow:hidden;
+  }
+  .closing-panel h2{
+    font-family:'Fraunces',serif; font-weight:500;
+    font-size:clamp(1.8rem,4vw,2.6rem);
+    margin-bottom:16px;
+  }
+  .closing-panel p{color:var(--cream-dim); margin-bottom:30px; font-size:1.02rem;}
+
+  footer{
+    position:relative; z-index:5;
+    text-align:center;
+    padding:36px;
+    color:var(--cream-dim);
+    font-size:.85rem;
+    border-top:1px solid rgba(255,217,160,0.12);
+  }
+  footer .heart{color:var(--amber);}
+
+  @media (max-width: 880px){
+    .hero{grid-template-columns:1fr; padding-top:40px;}
+    .storefront-wrap{height:340px; order:-1;}
+    #pane1{left:10px; width:170px; height:220px;}
+    #pane2{left:170px; top:130px; width:150px; height:180px;}
+    #pane3{left:200px; width:110px; height:110px;}
+    .features{grid-template-columns:1fr;}
+    .navlinks{display:none;}
+    .stat-row{flex-wrap:wrap; gap:24px;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+
+  /* ---------- MODALS & FORMS ---------- */
+  .modal-backdrop{
+    display:none;
+    position:fixed; inset:0; z-index:50;
+    background:rgba(10,8,26,0.72);
+    backdrop-filter:blur(4px);
+    align-items:center; justify-content:center;
+    padding:20px;
+  }
+  .modal-backdrop.open{display:flex;}
+  .modal{
+    position:relative;
+    width:100%; max-width:420px;
+    background:linear-gradient(160deg, #2a2158, #1c1640);
+    border:1px solid rgba(255,217,160,0.25);
+    border-radius:20px;
+    padding:32px;
+    box-shadow:0 30px 70px -20px rgba(0,0,0,0.6);
+  }
+  .modal-close{
+    position:absolute; top:14px; right:16px;
+    background:none; border:none; color:var(--cream-dim);
+    font-size:1.4rem; cursor:pointer; line-height:1;
+  }
+  .modal-close:hover{color:var(--cream);}
+  .modal-tabs{display:flex; gap:8px; margin-bottom:22px;}
+  .modal-tab{
+    flex:1; padding:10px; border-radius:10px; border:1px solid transparent;
+    background:transparent; color:var(--cream-dim); font-weight:600; cursor:pointer;
+    font-family:inherit; font-size:.9rem;
+  }
+  .modal-tab.active{background:var(--glass); border-color:var(--glass-edge); color:var(--cream);}
+  .modal-form{display:flex; flex-direction:column; gap:14px;}
+  .modal-form label{font-size:.82rem; color:var(--cream-dim); display:flex; flex-direction:column; gap:6px;}
+  .modal-form input{
+    padding:12px 14px; border-radius:10px;
+    border:1px solid rgba(255,217,160,0.25);
+    background:rgba(0,0,0,0.2); color:var(--cream); font-size:.95rem; font-family:inherit;
+  }
+  .modal-form input:focus{outline:2px solid var(--amber-soft); outline-offset:1px;}
+  .modal-error{color:#ff9b9b; font-size:.85rem; display:none;}
+  .modal-error.show{display:block;}
+  .modal-success{color:#9be89b; font-size:.85rem; display:none;}
+  .modal-success.show{display:block;}
+
+  .mall-card p.desc{margin:6px 0 14px;}
+  .mall-card .rating{
+    display:inline-block; font-size:.8rem; color:var(--amber-soft);
+    background:rgba(255,184,107,0.12); padding:4px 10px; border-radius:20px; margin-bottom:12px;
+  }
+  .mall-card .btn{padding:10px 18px; font-size:.85rem;}
+  .booking-item{
+    background:var(--glass); border:1px solid rgba(255,217,160,0.18);
+    border-radius:12px; padding:14px 16px; font-size:.88rem; color:var(--cream-dim);
+  }
+  .booking-item b{color:var(--cream); font-family:'Fraunces',serif;}
+</style>
+</head>
+<body>
+
+<div class="scene" id="scene">
+  <div class="stars" id="stars"></div>
+
+  <svg class="skyline" viewBox="0 0 1280 260" preserveAspectRatio="none" style="height:34vh; width:100%;">
+    <defs>
+      <linearGradient id="bld" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#241a4d"/>
+        <stop offset="100%" stop-color="#161233"/>
+      </linearGradient>
+      <radialGradient id="winGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="#ffd9a0" stop-opacity="0.95"/>
+        <stop offset="100%" stop-color="#ffb86b" stop-opacity="0"/>
+      </radialGradient>
+    </defs>
+    <rect x="0" y="90" width="1280" height="170" fill="url(#bld)"/>
+    <rect x="60" y="40" width="240" height="220" fill="url(#bld)"/>
+    <rect x="980" y="55" width="260" height="205" fill="url(#bld)"/>
+    <g id="windows"></g>
+    <rect x="520" y="70" width="240" height="190" fill="none" stroke="#ffd9a0" stroke-opacity="0.25" stroke-width="2"/>
+    <path d="M540 260 L540 140 L760 140 L760 260" fill="none" stroke="#ffb86b" stroke-opacity="0.35" stroke-width="2"/>
+  </svg>
+
+  <nav>
+    <div class="brandmark"><span class="dot"></span>Trial</div>
+    <div class="navlinks">
+      <a href="#malls">Malls</a>
+      <a href="#features">How it works</a>
+      <a href="#" id="myBookingsLink" style="display:none;">My bookings</a>
+      <a href="/register" id="registerNavLink">Register</a>
+      <a href="/login" id="loginNavLink">Log in</a>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div>
+      <div class="eyebrow">Jodhpur &amp; beyond</div>
+      <h1>Every mall,<br><em>one warm</em><br>welcome.</h1>
+      <p class="tagline">Trial helps you find the right mall, see what's on before you go, and book products, services and tickets in a couple of taps — no queues, no guessing.</p>
+      <div class="cta-row">
+        <a href="#" class="btn btn-primary" id="heroLoginBtn">Log in to start →</a>
+        <a href="#malls" class="btn btn-ghost">Browse malls</a>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><b>120+</b><span>malls listed</span></div>
+        <div class="stat"><b>4.7★</b><span>average rating</span></div>
+        <div class="stat"><b>2 min</b><span>to book</span></div>
+      </div>
+    </div>
+
+    <div class="storefront-wrap" id="storefrontWrap">
+      <div class="pane" id="pane1"><div class="pane-glow"></div>
+        <div class="pane-icon">🛍️</div>
+        <div class="pane-label"><b>Find malls</b>nearby, with live ratings</div>
+      </div>
+      <div class="pane" id="pane2"><div class="pane-glow"></div>
+        <div class="pane-icon">📅</div>
+        <div class="pane-label"><b>Book instantly</b>skip the counter queue</div>
+      </div>
+      <div class="pane" id="pane3"><div class="pane-glow"></div>
+        <div class="pane-icon">⭐</div>
+        <div class="pane-label"><b>Real reviews</b>from real visits</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section" id="features">
+  <div class="section-head">
+    <div class="eyebrow">Why Trial</div>
+    <h2>Built for the walk from parking to storefront.</h2>
+    <p>Three things, done properly — so the ten minutes before you shop or the ten minutes deciding what to book stay easy.</p>
+  </div>
+  <div class="features">
+    <div class="card" data-tilt><span class="num">01</span>
+      <div class="icon">🛍️</div>
+      <h3>Find malls</h3>
+      <p>Browse nearby malls with honest ratings, opening hours and the facilities that actually matter — parking, food courts, play areas.</p>
+    </div>
+    <div class="card" data-tilt><span class="num">02</span>
+      <div class="icon">⭐</div>
+      <h3>Rate &amp; review</h3>
+      <p>Leave a quick review after your visit and help the next person choose better. No essays required.</p>
+    </div>
+    <div class="card" data-tilt><span class="num">03</span>
+      <div class="icon">📅</div>
+      <h3>Easy booking</h3>
+      <p>Reserve products, services and tickets ahead of time. Show up, collect, done.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="malls">
+  <div class="section-head">
+    <div class="eyebrow">Live from the API</div>
+    <h2>Browse malls</h2>
+    <p>Pulled straight from <code>/api/malls</code>. Filter by minimum rating, then book a product or service.</p>
+  </div>
+  <div class="cta-row" style="margin-bottom:32px;">
+    <input type="number" id="minRatingInput" placeholder="Min rating e.g. 4" step="0.1" min="0" max="5"
+      style="padding:12px 16px; border-radius:10px; border:1px solid var(--glass-edge); background:var(--glass); color:var(--cream); width:180px;">
+    <button class="btn btn-ghost" id="filterMallsBtn" type="button">Filter</button>
+    <button class="btn btn-ghost" id="resetMallsBtn" type="button">Show all</button>
+  </div>
+  <div class="features" id="mallsGrid">
+    <p style="color:var(--cream-dim);">Loading malls…</p>
+  </div>
+</section>
+
+<!-- ---------- MODALS ---------- -->
+<div class="modal-backdrop" id="authModal">
+  <div class="modal">
+    <button class="modal-close" data-close>&times;</button>
+    <div class="modal-tabs">
+      <button class="modal-tab active" data-tab="login" type="button">Log in</button>
+      <button class="modal-tab" data-tab="register" type="button">Register</button>
+    </div>
+    <form id="loginForm" class="modal-form">
+      <p class="modal-error" id="loginError"></p>
+      <label>Email<input type="email" name="email" required></label>
+      <label>Password<input type="password" name="password" required></label>
+      <button class="btn btn-primary" type="submit" style="width:100%; justify-content:center;">Log in</button>
+    </form>
+    <form id="registerForm" class="modal-form" style="display:none;">
+      <p class="modal-error" id="registerError"></p>
+      <p class="modal-success" id="registerSuccess"></p>
+      <label>Name<input type="text" name="name" required></label>
+      <label>Email<input type="email" name="email" required></label>
+      <label>Password<input type="password" name="password" required></label>
+      <button class="btn btn-primary" type="submit" style="width:100%; justify-content:center;">Create account</button>
+    </form>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="bookingModal">
+  <div class="modal">
+    <button class="modal-close" data-close>&times;</button>
+    <h3 id="bookingMallName" style="font-family:'Fraunces',serif; margin-bottom:18px;">Book</h3>
+    <form id="bookingForm" class="modal-form">
+      <p class="modal-error" id="bookingError"></p>
+      <p class="modal-success" id="bookingSuccess"></p>
+      <input type="hidden" name="mallId">
+      <input type="hidden" name="mallName">
+      <label>Product / service<input type="text" name="ProductName" required></label>
+      <label>Quantity<input type="number" name="quantity" value="1" min="1" required></label>
+      <label>Total price<input type="number" name="TotalPrice" step="0.01" min="0" required></label>
+      <button class="btn btn-primary" type="submit" style="width:100%; justify-content:center;">Confirm booking</button>
+    </form>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="bookingsModal">
+  <div class="modal">
+    <button class="modal-close" data-close>&times;</button>
+    <h3 style="font-family:'Fraunces',serif; margin-bottom:18px;">My bookings</h3>
+    <div id="bookingsList" style="max-height:360px; overflow:auto; display:flex; flex-direction:column; gap:12px;"></div>
+  </div>
+</div>
+
+<section class="closing">
+  <div class="closing-panel">
+    <h2>Your next mall visit, sorted before you leave home.</h2>
+    <p>Log in to save favourites, track bookings and rate as you go.</p>
+    <a href="#" class="btn btn-primary" id="closingLoginBtn">Log in to start →</a>
+  </div>
+</section>
+
+<footer>
+  &copy; 2026 Trial — made with <span class="heart">♥</span> in Jodhpur
+</footer>
+
+<script src="/app.js" defer></script>
+</body>
+</html>
