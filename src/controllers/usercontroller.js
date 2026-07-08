@@ -1,5 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const usermodel = require('../models/usermodel');
+
 const register = (req, res) => {
     try{
         const{name,email,password} = req.body;
@@ -9,17 +11,18 @@ const register = (req, res) => {
                 message:"Please enter your info properly"
             });
         }
+        const newuser = usermodel.register({name,email,password});
+        if(!newuser.success){
+            return res.status(400).json(newuser.message);
+        }
         res.status(201).json({
-           success:true,
-           message:"Registration is successfull",
-           user:{
-                name:name,
-                email:email,
-           }
+        //    success:true,
+        //    message:"Registration is successfull",
+           data:newuser.user
         });
     }
     catch(error){
-        res.status(501).json({
+        res.status(500).json({
             success:false,
             message:"Internal error"
         });
@@ -37,7 +40,7 @@ const login = (req, res) => {
             });
         }
 
-        console.log("JWT_SECRET from env:", process.env.JWT_SECRET); // Debugging line
+        // console.log("JWT_SECRET from env:", process.env.JWT_SECRET); // Debugging line
 
         if (!process.env.JWT_SECRET) {
             console.error("ERROR: JWT_SECRET is missing or empty!");
@@ -69,4 +72,28 @@ const login = (req, res) => {
     }
 };
 
-module.exports = {register,login};
+const getprofile = (req,res) => {
+    try{
+        console.log("req.user:", req.user);
+        const profile = user.getuserprofile(req.user.email);
+        if(!profile){
+            return res.status(404).json({
+                success:false,
+                message:"User Not Found"
+            });
+        }
+        res.status(200).json({
+            success:true,
+            data:profile
+        });
+    }
+    catch(error){
+        console.error("Profile Error:", error.message);
+        return res.status(500).json({
+            success:false,
+            message:"Internal Error"
+        });
+    }
+};
+
+module.exports = {register,login,getprofile};

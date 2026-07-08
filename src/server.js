@@ -1,8 +1,8 @@
 require('dotenv').config();
-const express = require('express'); 
-const cors = require('cors');        
-const helmet = require('helmet');       
-const morgan = require('morgan');     
+const express = require('express');
+const cors = require('cors');    
+const helmet = require('helmet');      
+const morgan = require('morgan');    
 const path = require('path');
 const app = express();
 
@@ -10,22 +10,24 @@ app.use(cors());
 app.use(helmet());
 app.use(morgan('dev'));
 app.use(express.json());
-
+app.use(express.urlencoded());
 const userRoutes = require('./routes/userRoutes');
 const mallRoutes = require('./routes/mallRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 app.use('/api/malls',mallRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/bookings',bookingRoutes);
+app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname,'./','views','home.html'));
 });
-//register______________________________
+
+//register_____________________________________________________________
 app.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname,'./','views','register.html'));
 });
 
-//login________________________________
+//login________________________________________________________________
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname,'./','views','login.html'));
 });
