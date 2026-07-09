@@ -2,7 +2,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const usermodel = require('../models/usermodel');
 
-const register = (req, res) => {
+const register = async (req, res) => {
     try{
         const{name,email,password} = req.body;
         if(!name || !email || !password){
@@ -11,7 +11,7 @@ const register = (req, res) => {
                 message:"Please enter your info properly"
             });
         }
-        const newuser = usermodel.register({name,email,password});
+        const newuser = await usermodel.register({name,email,password});
         if(!newuser.success){
             return res.status(400).json(newuser.message);
         }
@@ -22,9 +22,10 @@ const register = (req, res) => {
         });
     }
     catch(error){
+        console.log("error->",error.message);
         res.status(500).json({
             success:false,
-            message:"Internal error"
+            message:"Internal error "
         });
     }
 };
@@ -72,19 +73,18 @@ const login = (req, res) => {
     }
 };
 
-const getprofile = (req,res) => {
+const getprofile = async (req,res) => {
     try{
         console.log("req.user:", req.user);
-        const profile = user.getuserprofile(req.user.email);
-        if(!profile){
+        const profile = await usermodel.getuserprofile(req.user.email);
+        if(!profile.success){
             return res.status(404).json({
                 success:false,
                 message:"User Not Found"
             });
         }
         res.status(200).json({
-            success:true,
-            data:profile
+            data:profile.user
         });
     }
     catch(error){

@@ -1,1 +1,4 @@
-{"watch": ["src"], "ext": "js"} 
+{"watch": ["src"],
+ "ignore":"json",
+ "ext": "js"
+} 
