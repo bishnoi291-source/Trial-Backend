@@ -1,5 +1,5 @@
 const Mall = require('../models/Mall');
-const addMall = (req,res) => {
+const addMall = async (req,res) => {
     try{
         const {name, location, rating, description, facilities} = req.body;
         if(!name || !location) {
@@ -8,9 +8,10 @@ const addMall = (req,res) => {
                 message:"Name ans Location are required"
             });
         }
-        const newmall = Mall.createMall({
+        const newmall = await Mall({
             name,location,rating,description,facilities
         });
+        await newmall.save();
         res.status(201).json({
             success:true,
             message:"Mall added successfully",
@@ -25,16 +26,17 @@ const addMall = (req,res) => {
         });
     }
 };
-const getMalls = (req,res) => {
-    const malls = Mall.getALLMalls();
+const getMalls = async (req,res) => {
+    const malls = await Mall.find();
     res.json({
         success:true,
         count:malls.length,
         data:malls
     });
 };
-const getMall = (req,res) => {
-    const mall = Mall.getMallById(req.params.id);
+
+const getMall = async (req,res) => {  //-----------
+    const mall = await Mall.findById(req.params.id);
     if(!mall) {
         return res.status(404).json({
             success:false,
@@ -47,9 +49,9 @@ const getMall = (req,res) => {
     });
 };
 
-const updatemall = (req,res) => {
+const updatemall = async (req,res) => {
     try{
-        const mall = Mall.updateMall(req.params.id,req.body);
+        const mall = await Mall.findByIdAndUpdate(req.params.id,req.body);
         if(!mall){
             return res.status(404).json({
                 success:false,
@@ -70,18 +72,19 @@ const updatemall = (req,res) => {
     }
 };
 
-const deletemall = (req,res) => {
-    try {const success = Mall.deleteMall(req.params.id);
+const deletemall = async (req,res) => {
+    try {
+        const success = await Mall.findByIdAndDelete(req.params.id);
         if(!success){
         return res.status(404).json({
           success:false,
           message:"MALL NOT FOUND"
-       });
-       }
-       res.json({
+        });
+        }
+        res.json({
         success:true,
         message:"MALL DELETED SUCCESSFULLY"
-       });
+        });
     }
     catch(error){
         res.status(500).json({
@@ -89,10 +92,9 @@ const deletemall = (req,res) => {
             message:"INTERNAL SERVER ERROR"
         });
     }
-
 };
 
-const searchMall = (req,res) => {
+const searchMall = async (req,res) => {
     try {
         const {minRating} = req.query;
         if(!minRating){
@@ -101,7 +103,9 @@ const searchMall = (req,res) => {
             message:"MinRating is required"
         });
         }
-    const filteredmall = Mall.searchMallsByRating(minRating);
+    const filteredmall = await Mall.find({
+        rating:{$gte : Number(minRating)}
+    });
     res.json({
         success:true,
         count:filteredmall.length,
@@ -116,6 +120,7 @@ const searchMall = (req,res) => {
     }
 
 };
+
 module.exports = {
     addMall,
     getMalls,

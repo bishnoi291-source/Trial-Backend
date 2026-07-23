@@ -4,7 +4,7 @@ const {addMall, getMalls, getMall,updatemall,deletemall,searchMall} = require('.
 const {authenticateToken} = require('../middleware/authMiddleware');
 const { searchMallsByRating } = require('../models/Mall');
 router.get('/',getMalls);
-router.get('/search',searchMall);
+router.get('/search',searchMall); //---modify it.
 router.get('/:id',getMall);
 router.post('/',authenticateToken,addMall);
 router.put('/:id',authenticateToken,updatemall);
