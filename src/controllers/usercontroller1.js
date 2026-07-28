@@ -1,24 +1,8 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const {check,validationResult} = require('express-validator');
 const usermodel = require('../models/usermodel');
 
-const register = [
-    check("name")
-    .notEmpty().withMessage("Please Enter Your Sweat Name")
-    .trim()
-    .isLength({min:2}).withMessage("Lenght is small")
-    .matches(/[A-Za-z]/).withMessage("Please Use Only Alphabets"),
-
-    check("email")
-    .isEmail().withMessage("Please Enter a Valid Email")
-    .normalizeEmail(),
-
-    check("password")
-    .notEmpty().withMessage("Please enter your password")
-    .isLength({min:8}).withMessage("Password must 8 contain characters"),
-
-    async (req, res) => {
+const register = async (req, res) => {
     try{
         const{name,email,password} = req.body;
         if(!name || !email || !password){
@@ -48,7 +32,7 @@ const register = [
             message:"Internal error "
         });
     }
-}];
+};
 
 const login = async (req, res) => {
     try {
