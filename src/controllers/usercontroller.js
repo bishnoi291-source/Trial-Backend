@@ -1,9 +1,10 @@
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const {check,validationResult} = require('express-validator');
 const usermodel = require('../models/usermodel');
 
 const register = [
+
     check("name")
     .notEmpty().withMessage("Please Enter Your Sweat Name")
     .trim()
@@ -21,10 +22,12 @@ const register = [
     async (req, res) => {
     try{
         const{name,email,password} = req.body;
-        if(!name || !email || !password){
+        const error = validationResult(req);
+        if(!error.isEmpty()){
+            console.log(error);
             return res.status(400).json({
                 success:false,
-                message:"Please enter your info properly"
+                err: error.message
             });
         }
         const newuser = await usermodel.findOne({email});
@@ -33,8 +36,9 @@ const register = [
                 message:"User already Exist"
             });
         }
-       const user = new usermodel({name,email,password});
-       await user.save();
+        const hashedpassword = await bcrypt.hash(password,12);
+        const user = new usermodel({name,email,password:hashedpassword});
+        await user.save();
         res.status(201).json({
            success:true,
            message:"Registration is successfull",
@@ -60,14 +64,23 @@ const login = async (req, res) => {
                 message: "Email and Password are required"
             });
         }
-        const result = await usermodel.findOne({ email, password });
+
+        const result = await usermodel.findOne({ email});
         if(!result){
             return res.status(400).json({
                 success:false,
                 message:"Invalid User"
             });
         }
-        // console.log("JWT_SECRET from env:", process.env.JWT_SECRET); // Debugging line
+        const ismatch = await bcrypt.compare(password,result.password);
+
+        if(!ismatch){
+            
+            return res.status(400).json({
+                success:false,
+                message:"Invalid Inputs"
+            });
+        }
 
         if (!process.env.JWT_SECRET) {
             console.error("ERROR: JWT_SECRET is missing or empty!");
